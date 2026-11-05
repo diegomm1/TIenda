@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CestaSana · Compara precios y nutrición</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="#">Cesta<span>Sana</span></a>
+      <p class="tagline">Compara precios y valores nutricionales entre supermercados</p>
+    </div>
+  </header>
+
+  <!-- Aquí se inyectará el catálogo en la siguiente fase -->
+  <main id="app-content" class="container">
+    <p class="placeholder">El catálogo de productos aparecerá aquí.</p>
+  </main>
+
+  <!-- Botón flotante del carrito -->
+  <button id="cart-button" class="cart-fab" type="button" aria-label="Ver cesta. Total: 0.00 euros">
+    <svg class="cart-icon" viewBox="0 0 24 24" width="22" height="22" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3 9h18l-1.6 9.2a2 2 0 0 1-2 1.8H6.6a2 2 0 0 1-2-1.8L3 9z"/>
+      <path d="M8 9l3-5M16 9l-3-5"/>
+    </svg>
+    <span id="cart-total">0.00 €</span>
+  </button>
+
+  <!-- Asistente flotante -->
+  <button id="chat-toggle" class="chat-fab" type="button" aria-label="Abrir asistente" aria-expanded="false" aria-controls="chat-window">
+    <svg class="icon-open" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.6-.8L3 21l1.9-5.1A8.4 8.4 0 1 1 21 11.5z"/>
+    </svg>
+    <svg class="icon-close" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+         stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+      <path d="M6 9l6 6 6-6"/>
+    </svg>
+  </button>
+
+  <section id="chat-window" class="chat-window" role="dialog" aria-label="Asistente de compra saludable" hidden>
+    <header class="chat-header">
+      <div class="chat-avatar" aria-hidden="true">IA</div>
+      <div class="chat-header-text">
+        <strong>Asistente CestaSana</strong>
+        <span>Pregunta por precios y nutrición</span>
+      </div>
+    </header>
+
+    <div id="chat-messages" class="chat-messages" role="log" aria-live="polite"></div>
+
+    <form id="chat-form" class="chat-form" autocomplete="off">
+      <input id="chat-input" class="chat-input" type="text" placeholder="Escribe tu pregunta…"
+             aria-label="Mensaje para el asistente" maxlength="500">
+      <button id="chat-send" class="chat-send" type="submit" aria-label="Enviar mensaje">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+      </button>
+    </form>
+  </section>
+
+  <!-- Modal de bienvenida -->
+  <div id="welcome-overlay" class="overlay" role="presentation">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title" aria-describedby="welcome-text">
+      <button id="welcome-close" class="modal-close" type="button" aria-label="Cerrar mensaje de bienvenida">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+             stroke-width="3" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
+      <h1 id="welcome-title">Bienvenido a CestaSana</h1>
+      <p id="welcome-text">
+        Aquí puedes comparar el <strong>precio</strong> y los <strong>valores nutricionales</strong>
+        de productos de Mercadona, Lidl y otros supermercados. Elige lo que mejor encaja
+        con tu presupuesto y con tu forma de comer, y ve sumando tu compra en la cesta.
+      </p>
+      <button id="welcome-start" class="btn-primary" type="button">Empezar a comparar</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
