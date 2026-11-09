@@ -326,12 +326,12 @@
   }
 
   // Llamada a nuestro endpoint /api/gemini: la usan el chat y la Valoración IA.
-  // Recibe { system, contents, temperature, maxOutputTokens } y devuelve el texto de la respuesta.
-  async function callGemini({ system, contents, temperature, maxOutputTokens }) {
+  // Recibe { system, contents, generationConfig } y devuelve el texto de la respuesta.
+  async function callGemini({ system, contents, generationConfig }) {
     const res = await fetch(API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ system, contents, temperature, maxOutputTokens })
+      body: JSON.stringify({ system, contents, generationConfig })
     });
 
     const data = await res.json().catch(() => ({}));

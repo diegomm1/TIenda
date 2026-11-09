@@ -1,7 +1,8 @@
 // api/gemini.js · Vercel Serverless Function (Node.js)
 // Puente entre el frontend y la API de Gemini: la key solo vive en el servidor.
 
-const MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
+// Modelo rápido y económico para consultas de chat y valoraciones.
+const MODEL = 'gemini-3.5-flash-lite';
 const GEMINI_ENDPOINT =
   `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 
@@ -30,6 +31,7 @@ function buildPayload(body) {
   if (!body || typeof body !== 'object') return { error: 'Cuerpo de la petición no válido.' };
 
   const { system, contents } = body;
+  const generationConfig = body.generationConfig || {};
 
   if (!Array.isArray(contents) || contents.length === 0 || contents.length > LIMITS.maxMessages) {
     return { error: 'La lista de mensajes no es válida.' };
@@ -53,8 +55,20 @@ function buildPayload(body) {
   const payload = {
     contents: cleanContents,
     generationConfig: {
-      temperature: clamp(body.temperature, 0, 1, 0.7),
-      maxOutputTokens: Math.round(clamp(body.maxOutputTokens, 1, LIMITS.maxOutputTokens, 500))
+      temperature: clamp(
+        generationConfig.temperature !== undefined ? generationConfig.temperature : body.temperature,
+        0,
+        1,
+        0.7
+      ),
+      maxOutputTokens: Math.round(clamp(
+        generationConfig.maxOutputTokens !== undefined
+          ? generationConfig.maxOutputTokens
+          : body.maxOutputTokens,
+        1,
+        LIMITS.maxOutputTokens,
+        500
+      ))
     }
   };
 
@@ -62,7 +76,7 @@ function buildPayload(body) {
     if (typeof system !== 'string' || system.length > LIMITS.maxSystemChars) {
       return { error: 'La instrucción de sistema no es válida.' };
     }
-    if (system.trim()) payload.system_instruction = { parts: [{ text: system }] };
+    if (system.trim()) payload.systemInstruction = { parts: [{ text: system }] };
   }
 
   return { payload };
