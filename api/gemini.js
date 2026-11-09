@@ -1,10 +1,10 @@
 // api/gemini.js · Vercel Serverless Function (Node.js)
 // Puente entre el frontend y la API de Gemini: la key solo vive en el servidor.
 
-// Modelo rápido y económico para consultas de chat y valoraciones.
-// Mantenerlo en un modelo publicado evita que la función falle antes de procesar
-// la petición cuando se retire o no exista un alias experimental.
-const MODEL = 'gemini-2.5-flash-lite';
+// Modelo rápido y económico para chat y valoraciones.
+// Google limita los modelos 2.5 a proyectos que ya los usaban, así que se usa 3.5 Flash-Lite.
+// Se puede cambiar sin tocar el código con la variable de entorno GEMINI_MODEL en Vercel.
+const MODEL = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
 const GEMINI_ENDPOINT =
   `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 
@@ -112,7 +112,7 @@ function upstreamMessage(status, data) {
   if (status === 503) return 'La IA está saturada en este momento. Inténtalo de nuevo en unos segundos.';
   if (status === 429) return 'Se ha alcanzado el límite de uso de la IA. Espera un momento e inténtalo de nuevo.';
   if (status === 401 || status === 403) return 'La clave de la IA no es válida o no tiene acceso a Gemini.';
-  if (status === 404) return 'El modelo de IA configurado no está disponible. Revisa la configuración del servidor.';
+  if (status === 404) return `El modelo de IA (${MODEL}) no está disponible para esta clave. Revisa GEMINI_MODEL en Vercel.`;
   return (data.error && data.error.message) || `Gemini respondió con el error ${status}.`;
 }
 
